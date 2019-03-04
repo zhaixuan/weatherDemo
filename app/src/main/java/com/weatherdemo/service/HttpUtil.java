@@ -3,6 +3,9 @@ package com.weatherdemo.service;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 
+/**
+ * 数据请求工具类
+ */
 public class HttpUtil {
     public static void sendOkHttpRequest(String address, okhttp3.Callback callback)
     {
