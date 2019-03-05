@@ -13,5 +13,6 @@
 1）修改gradle文件，解决在Android O上无法编译的问题
 
 4、Day04-2019/03/05
-1）晚上ChooseAreaFragment.java的代码；
-2）
+1）完善ChooseAreaFragment.java的代码；
+2）完成遍历省市县三级列表的功能
+3）添加显示天气的实体类

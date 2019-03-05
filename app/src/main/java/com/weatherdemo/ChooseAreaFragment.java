@@ -154,7 +154,7 @@ public class ChooseAreaFragment extends Fragment {
      */
     private void queryCities() {
         mTxtTitle.setText(selectedProvince.getProvinceName());
-        mBtnBack.setVisibility(View.GONE);
+        mBtnBack.setVisibility(View.VISIBLE);
         cityList = LitePal.where("provinceid = ?", String.valueOf(selectedProvince.getId())).find(City.class);
         if (null != cityList && cityList.size() > 0) {
             dataList.clear();
