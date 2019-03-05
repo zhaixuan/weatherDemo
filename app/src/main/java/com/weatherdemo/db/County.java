@@ -4,11 +4,12 @@ import org.litepal.crud.LitePalSupport;
 
 /**
  * 县信息类
+ * @author yejinmo
  */
 public class County extends LitePalSupport {
     private int id;
     /** 县的名称 */
-    private String countName;
+    private String countyName;
     /** 县所对应天气的id */
     private int weatherId;
     /** 所属城市的代号 */
@@ -22,12 +23,12 @@ public class County extends LitePalSupport {
         this.id = id;
     }
 
-    public String getCountName() {
-        return countName;
+    public String getCountyName() {
+        return countyName;
     }
 
-    public void setCountName(String countName) {
-        this.countName = countName;
+    public void setCountyName(String countyName) {
+        this.countyName = countyName;
     }
 
     public int getWeatherId() {

@@ -12,6 +12,7 @@ import org.json.JSONObject;
 
 /**
  * 数据处理类
+ * @author yejinmo
  */
 public class Utility {
 
@@ -53,7 +54,7 @@ public class Utility {
                     JSONObject cityObject = allCities.getJSONObject(i);
                     City city = new City();
                     city.setCityName(cityObject.getString("name"));
-                    city.setCitCode(cityObject.getInt("id"));
+                    city.setCityCode(cityObject.getInt("id"));
                     city.setProvinceId(provinceId);
                     city.save();
                 }
@@ -77,7 +78,7 @@ public class Utility {
                 for (int i = 0; i < allCounties.length(); i++) {
                     JSONObject countyObject = allCounties.getJSONObject(i);
                     County county = new County();
-                    county.setCountName(countyObject.getString("name"));
+                    county.setCountyName(countyObject.getString("name"));
                     county.setWeatherId(countyObject.getInt("weather_id"));
                     county.setCityId(cityId);
                     county.save();

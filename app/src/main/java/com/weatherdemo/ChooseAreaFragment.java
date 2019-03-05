@@ -1,9 +1,11 @@
 package com.weatherdemo;
 
+import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,16 +14,24 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.weatherdemo.R;
 import com.weatherdemo.db.City;
 import com.weatherdemo.db.County;
 import com.weatherdemo.db.Province;
+import com.weatherdemo.service.HttpUtil;
+import com.weatherdemo.service.Utility;
 
 import org.litepal.LitePal;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.Response;
 
 /**
  * 地区选择列表页面
@@ -66,6 +76,7 @@ public class ChooseAreaFragment extends Fragment {
      * 选中的县
      */
     private County selectedCounty;
+    private ProgressDialog progressDialog;
 
     @Nullable
     @Override
@@ -177,9 +188,7 @@ public class ChooseAreaFragment extends Fragment {
             adapter.notifyDataSetChanged();
             mlstArea.setSelection(0);
             currentLevel = LEVEL_COUNTY;
-        }
-        else
-        {
+        } else {
             int provinceCode = selectedProvince.getProvinceCode();
             int cityCode = selectedCity.getCityCode();
             String address = "http://guolin.tech/api/china/" + provinceCode + "/" + cityCode;
@@ -191,9 +200,74 @@ public class ChooseAreaFragment extends Fragment {
      * 根据传入的地址和类型从服务器上查询省市县数据。
      *
      * @param address
-     * @param province
+     * @param type
      */
-    private void queryFromServer(String address, String province) {
+    private void queryFromServer(String address, final String type) {
+        showProgressDialog();
+        HttpUtil.sendOkHttpRequest(address, new Callback() {
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                String responseText = response.body().string();
+                boolean result = false;
+                if (TextUtils.equals("province", type)) {
+                    result = Utility.handleProvinceResponse(responseText);
+                } else if (TextUtils.equals("city", type)) {
+                    result = Utility.handleCityResponse(responseText, selectedProvince.getId());
+                } else if (TextUtils.equals("county", type)) {
+                    result = Utility.handleCountyResponse(responseText, selectedCity.getId());
+                }
+                if (result) {
+                    getActivity().runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            closeProgressDialog();
+                            if (TextUtils.equals("province", type)) {
+                                queryProvinces();
+                            } else if (TextUtils.equals("city", type)) {
+                                queryCities();
+                            } else if (TextUtils.equals("county", type)) {
+                                querCounties();
+                            }
 
+                        }
+                    });
+                }
+            }
+
+            @Override
+            public void onFailure(Call call, IOException e) {
+                // 通过runOnUiThread()方法回到主线程处理逻辑
+                getActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        closeProgressDialog();
+                        Toast.makeText(getContext(), getResources().getString(R.string.load_failed)
+                                , Toast.LENGTH_SHORT).show();
+                    }
+                });
+            }
+
+        });
+    }
+
+    /**
+     * 显示进度对话框
+     */
+    private void showProgressDialog() {
+        if (null == progressDialog) {
+            progressDialog = new ProgressDialog(getActivity());
+            progressDialog.setMessage(getResources().getString(R.string.load_loading));
+            progressDialog.setCanceledOnTouchOutside(false);
+        }
+        progressDialog.show();
+    }
+
+    /**
+     * 隐藏进度对话框
+     */
+    private void closeProgressDialog() {
+        if (progressDialog != null) {
+            progressDialog.dismiss();
+        }
     }
 }

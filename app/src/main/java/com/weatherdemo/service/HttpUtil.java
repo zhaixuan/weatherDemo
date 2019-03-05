@@ -5,6 +5,7 @@ import okhttp3.Request;
 
 /**
  * 数据请求工具类
+ * @author yejinmo
  */
 public class HttpUtil {
     public static void sendOkHttpRequest(String address, okhttp3.Callback callback)

@@ -4,13 +4,14 @@ import org.litepal.crud.LitePalSupport;
 
 /**
  * 城市信息类
+ * @author yejinmo
  */
 public class City extends LitePalSupport {
     private int id;
     /** 城市名称 */
     private String cityName;
     /** 城市代号 */
-    private int citCode;
+    private int cityCode;
     /** 当前城市的省份id */
     private int provinceId;
 
@@ -30,12 +31,12 @@ public class City extends LitePalSupport {
         this.cityName = cityName;
     }
 
-    public int getCitCode() {
-        return citCode;
+    public int getCityCode() {
+        return cityCode;
     }
 
-    public void setCitCode(int citCode) {
-        this.citCode = citCode;
+    public void setCityCode(int cityCode) {
+        this.cityCode = cityCode;
     }
 
     public int getProvinceId() {

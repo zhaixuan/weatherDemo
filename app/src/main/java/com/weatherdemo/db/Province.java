@@ -4,6 +4,7 @@ import org.litepal.crud.LitePalSupport;
 
 /**
  * 省份信息类
+ * @author yejinmo
  */
 public class Province extends LitePalSupport {
     private int id;

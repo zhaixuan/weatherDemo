@@ -5,6 +5,10 @@ import android.os.Bundle;
 
 import com.example.weatherdemo.R;
 
+/**
+ * 主页面
+ * @author yejinmo
+ */
 public class MainActivity extends AppCompatActivity {
 
     @Override
